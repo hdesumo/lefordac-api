@@ -1,53 +1,41 @@
 import Message from "../models/Message.js";
-import Member from "../models/Member.js";
-import { sendSMSOrange, sendSMSMTN } from "../services/smsService.js";
 
-export const sendMessage = async (req, res) => {
+export const getAllMessages = async (req, res) => {
   try {
-    const { titre, contenu, cibleRegion, cibleDepartement, cibleArrondissement, operateur } = req.body;
+    const messages = await Message.findAll();
+    res.json(messages);
+  } catch (err) {
+    console.error("❌ Error fetching messages:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};
 
-    // Sauvegarde en DB
-    const newMsg = await Message.create({
-      titre,
-      contenu,
-      cibleRegion,
-      cibleDepartement,
-      cibleArrondissement,
-    });
+export const createMessage = async (req, res) => {
+  try {
+    console.log("DEBUG req.body:", req.body);
+    const { titre, contenu } = req.body;
 
-    // 🎯 Filtrage : uniquement les membres VALIDÉS
-    let whereClause = { statut: "valide" };
-    if (cibleRegion) whereClause.region = cibleRegion;
-    if (cibleDepartement) whereClause.departement = cibleDepartement;
-    if (cibleArrondissement) whereClause.arrondissement = cibleArrondissement;
-
-    const destinataires = await Member.findAll({ where: whereClause });
-
-    let successCount = 0;
-    for (let m of destinataires) {
-      let ok = false;
-      const text = `${titre}\n${contenu}`;
-
-      if (operateur === "orange") {
-        ok = await sendSMSOrange(m.telephone, text);
-      } else if (operateur === "mtn") {
-        ok = await sendSMSMTN(m.telephone, text);
-      } else {
-        const tryOrange = await sendSMSOrange(m.telephone, text);
-        const tryMTN = await sendSMSMTN(m.telephone, text);
-        ok = tryOrange || tryMTN;
-      }
-
-      if (ok) successCount++;
+    if (!titre || !contenu) {
+      return res.status(400).json({ error: "Titre et contenu sont obligatoires" });
     }
 
-    res.status(201).json({
-      message: "Message diffusé avec succès",
-      totalDestinataires: destinataires.length,
-      succes: successCount,
-      data: newMsg,
-    });
+    const message = await Message.create(req.body);
+    res.status(201).json(message);
   } catch (err) {
-    res.status(500).json({ error: "Erreur serveur", details: err.message });
+    console.error("❌ Error creating message:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const message = await Message.findByPk(req.params.id);
+    if (!message) return res.status(404).json({ error: "Message non trouvé" });
+
+    await message.destroy();
+    res.json({ message: "Message supprimé" });
+  } catch (err) {
+    console.error("❌ Error deleting message:", err);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };

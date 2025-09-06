@@ -1,0 +1,135 @@
+{
+  "info": {
+    "name": "FORDAC API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "Get all members",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/members"
+          }
+        },
+        {
+          "name": "Get member by ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/members/1"
+          }
+        },
+        {
+          "name": "Create member",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Jean Dupont\",\n  \"email\": \"jean@example.com\",\n  \"telephone\": \"699112233\",\n  \"region\": \"Littoral\",\n  \"departement\": \"Moungo\",\n  \"arrondissement\": \"Njombé-Penja\"\n}"
+            },
+            "url": "http://localhost:8080/api/members"
+          }
+        }
+      ]
+    },
+    {
+      "name": "News",
+      "item": [
+        {
+          "name": "Get all news",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/news"
+          }
+        },
+        {
+          "name": "Create news",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"FORDAC en action à Njombé-Penja\",\n  \"sousTitre\": \"Mobilisation des membres\",\n  \"contenu\": \"Le Fordac a organisé une rencontre avec les militants...\"\n}"
+            },
+            "url": "http://localhost:8080/api/news"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Get all messages",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/messages"
+          }
+        },
+        {
+          "name": "Send message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Mobilisation\",\n  \"contenu\": \"Tous les militants sont conviés à la réunion de Njombé-Penja demain.\",\n  \"cibleRegion\": \"Littoral\",\n  \"cibleDepartement\": \"Moungo\",\n  \"cibleArrondissement\": \"Njombé-Penja\",\n  \"operateur\": \"Orange\"\n}"
+            },
+            "url": "http://localhost:8080/api/messages"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "item": [
+        {
+          "name": "Get all media",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/gallery"
+          }
+        },
+        {
+          "name": "Add media",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Rassemblement Njombé\",\n  \"type\": \"image\",\n  \"mediaUrl\": \"https://example.com/photo-njombe.jpg\",\n  \"description\": \"Rencontre des militants à Njombé-Penja\"\n}"
+            },
+            "url": "http://localhost:8080/api/gallery"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "Get all contacts",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/contacts"
+          }
+        },
+        {
+          "name": "Create contact",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"sujet\": \"Demande d'information\",\n  \"message\": \"Je souhaite en savoir plus sur l'adhésion.\"\n}"
+            },
+            "url": "http://localhost:8080/api/contacts"
+          }
+        }
+      ]
+    }
+  ]
+}

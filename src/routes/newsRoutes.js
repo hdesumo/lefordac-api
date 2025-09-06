@@ -1,14 +1,14 @@
 import express from "express";
-import { createNews, getNews, getNewsById, updateNews, deleteNews } from "../controllers/newsController.js";
-import { upload } from "../middleware/upload.js";
+import {
+  getAllNews,
+  createNews,
+  deleteNews
+} from "../controllers/newsController.js";
 
 const router = express.Router();
 
-// ✅ Upload fichier avec Multer
-router.post("/", upload.single("media"), createNews);
-router.get("/", getNews);
-router.get("/:id", getNewsById);
-router.put("/:id", upload.single("media"), updateNews);
+router.get("/", getAllNews);
+router.post("/", createNews);
 router.delete("/:id", deleteNews);
 
 export default router;

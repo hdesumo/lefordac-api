@@ -1,26 +1,41 @@
 import Gallery from "../models/Gallery.js";
 
-// Ajouter un média
-export const addMedia = async (req, res) => {
+export const getAllMedia = async (req, res) => {
   try {
-    const { titre, type, description } = req.body;
-    let mediaUrl = null;
-    if (req.file) {
-      mediaUrl = `/uploads/${req.file.filename}`;
-    }
-    const media = await Gallery.create({ titre, type, mediaUrl, description });
-    res.status(201).json(media);
+    const media = await Gallery.findAll();
+    res.json(media);
   } catch (err) {
-    res.status(500).json({ error: "Erreur ajout média", details: err.message });
+    console.error("❌ Error fetching gallery:", err);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
-// Lister tous les médias
-export const getMedia = async (_req, res) => {
+export const addMedia = async (req, res) => {
   try {
-    const media = await Gallery.findAll({ order: [["createdAt", "DESC"]] });
-    res.json(media);
+    console.log("DEBUG req.body:", req.body);
+    const { type, mediaUrl } = req.body;
+
+    if (!type || !mediaUrl) {
+      return res.status(400).json({ error: "Type et mediaUrl sont requis" });
+    }
+
+    const media = await Gallery.create(req.body);
+    res.status(201).json(media);
   } catch (err) {
-    res.status(500).json({ error: "Erreur chargement médias" });
+    console.error("❌ Error adding media:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};
+
+export const deleteMedia = async (req, res) => {
+  try {
+    const media = await Gallery.findByPk(req.params.id);
+    if (!media) return res.status(404).json({ error: "Media non trouvé" });
+
+    await media.destroy();
+    res.json({ message: "Media supprimé" });
+  } catch (err) {
+    console.error("❌ Error deleting media:", err);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };
