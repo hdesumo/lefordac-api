@@ -9,7 +9,7 @@ import memberRoutes from "./src/routes/memberRoutes.js";
 import newsRoutes from "./src/routes/newsRoutes.js";
 import messageRoutes from "./src/routes/messageRoutes.js";
 import galleryRoutes from "./src/routes/galleryRoutes.js";
-import contactRoutes from "./src/routes/contactRoutes.js";
+//import contactRoutes from "./src/routes/contactRoutes.js";
 
 dotenv.config();
 
@@ -24,7 +24,7 @@ app.use("/api/members", memberRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/gallery", galleryRoutes);
-app.use("/api/contacts", contactRoutes);
+//app.use("/api/contacts", contactRoutes);
 
 // Test route
 app.get("/", (req, res) => {
